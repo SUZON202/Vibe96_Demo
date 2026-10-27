@@ -1,30 +1,35 @@
-import React, { useEffect, useState, useContext } from "react";
+import React, { useState, useContext } from "react";
 import { Plus, Trash2, Edit } from "lucide-react";
 import { Link } from "react-router-dom"; 
 import { AuthContext } from "../providers/AuthProvider"; 
 import toast from "react-hot-toast";
 
 export default function Products() {
-  const [products, setProducts] = useState([]);
-  const [loading, setLoading] = useState(true);
+  // Demo Products for Vibe96 Marketplace Preview
+  const [products, setProducts] = useState([
+    {
+      _id: "6addc9fea67e0fa253bc3b8",
+      name: "Special Grilled Chicken",
+      price: 350,
+      category: "Main Course",
+      image: "https://i.ibb.co/Vvz1W6P/chicken-grill.jpg",
+      description: "Delicious and spicy special grilled chicken served with salad and sauce."
+    },
+    {
+      _id: "6addc9fea67e0fa253bc3b9",
+      name: "Juicy Beef Burger",
+      price: 500,
+      category: "Fast Food",
+      image: "https://i.ibb.co/x8w48z/bbbbb.avif",
+      description: "Cheesy and juicy beef burger with special spicy sauce."
+    }
+  ]);
+  
+  const [loading, setLoading] = useState(false);
   
   // Get user from context to check if it's demo admin
   const { user } = useContext(AuthContext);
   const isDemoAdmin = user?.email === "admin@swad.com";
-
-  // Load products from backend
-  useEffect(() => {
-    fetch("http://localhost:5000/api/products")
-      .then((res) => res.json())
-      .then((data) => {
-        setProducts(data);
-        setLoading(false);
-      })
-      .catch((err) => {
-        console.error("Error fetching products:", err);
-        setLoading(false);
-      });
-  }, []);
 
   // Function to delete product
   const handleDelete = (id) => {
@@ -35,18 +40,9 @@ export default function Products() {
     }
 
     if (window.confirm("Are you sure you want to delete this product?")) {
-      fetch(`http://localhost:5000/api/products/${id}`, {
-        method: "DELETE",
-      })
-        .then((res) => res.json())
-        .then((data) => {
-          if (data.deletedCount > 0) {
-            const remaining = products.filter((p) => p._id !== id);
-            setProducts(remaining);
-            toast.success("Product deleted successfully!");
-          }
-        })
-        .catch((err) => console.error("Error deleting product:", err));
+      const remaining = products.filter((p) => p._id !== id);
+      setProducts(remaining);
+      toast.success("Product deleted successfully!");
     }
   };
 
