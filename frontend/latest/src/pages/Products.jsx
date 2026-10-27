@@ -1,10 +1,16 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useContext } from "react";
 import { Plus, Trash2, Edit } from "lucide-react";
 import { Link } from "react-router-dom"; 
+import { AuthContext } from "../providers/AuthProvider"; 
+import toast from "react-hot-toast";
 
 export default function Products() {
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
+  
+  // Get user from context to check if it's demo admin
+  const { user } = useContext(AuthContext);
+  const isDemoAdmin = user?.email === "admin@swad.com";
 
   // Load products from backend
   useEffect(() => {
@@ -22,6 +28,12 @@ export default function Products() {
 
   // Function to delete product
   const handleDelete = (id) => {
+    // Block Demo Admin from deleting
+    if (isDemoAdmin) {
+      toast.error("Read-Only Mode: Demo Admin cannot delete products!");
+      return;
+    }
+
     if (window.confirm("Are you sure you want to delete this product?")) {
       fetch(`http://localhost:5000/api/products/${id}`, {
         method: "DELETE",
@@ -31,7 +43,7 @@ export default function Products() {
           if (data.deletedCount > 0) {
             const remaining = products.filter((p) => p._id !== id);
             setProducts(remaining);
-            alert("Product deleted successfully!");
+            toast.success("Product deleted successfully!");
           }
         })
         .catch((err) => console.error("Error deleting product:", err));
@@ -48,8 +60,18 @@ export default function Products() {
           <p className="mt-1 text-sm text-gray-500">Manage all your restaurant products and dishes here.</p>
         </div>
         <Link 
-          to="/dashboard/add-product"
-          className="inline-flex w-fit items-center gap-2 rounded-xl bg-orange-500 px-5 py-2.5 text-sm font-bold text-white shadow-lg shadow-orange-950/20 transition hover:bg-orange-600"
+          to={isDemoAdmin ? "#" : "/dashboard/add-product"}
+          onClick={(e) => {
+            if (isDemoAdmin) {
+              e.preventDefault();
+              toast.error("Read-Only: Cannot add new products.");
+            }
+          }}
+          className={`inline-flex w-fit items-center gap-2 rounded-xl px-5 py-2.5 text-sm font-bold text-white shadow-lg transition ${
+            isDemoAdmin 
+              ? "bg-gray-700 cursor-not-allowed text-gray-400 shadow-none" 
+              : "bg-orange-500 hover:bg-orange-600 shadow-orange-950/20"
+          }`}
         >
           <Plus size={18} />
           Add New Product
@@ -92,17 +114,39 @@ export default function Products() {
                 <span className="text-[10px] font-mono text-gray-500">ID: {product._id.slice(-6).toUpperCase()}</span>
                 <div className="flex gap-2">
                   
-                  {/* Edit Button with Link */}
-                  <Link to={`/dashboard/update-product/${product._id}`}>
-                    <button className="p-2 rounded-lg bg-white/[0.04] text-gray-400 hover:text-white hover:bg-blue-500/20 hover:text-blue-400 transition cursor-pointer" title="Edit">
+                  {/* Edit Button */}
+                  <Link 
+                    to={isDemoAdmin ? "#" : `/dashboard/update-product/${product._id}`}
+                    onClick={(e) => {
+                      if (isDemoAdmin) {
+                        e.preventDefault();
+                        toast.error("Read-Only: Cannot edit products.");
+                      }
+                    }}
+                  >
+                    <button 
+                      disabled={isDemoAdmin}
+                      className={`p-2 rounded-lg transition ${
+                        isDemoAdmin 
+                          ? "bg-gray-800 text-gray-600 cursor-not-allowed" 
+                          : "bg-white/[0.04] text-gray-400 hover:text-white hover:bg-blue-500/20 hover:text-blue-400 cursor-pointer"
+                      }`} 
+                      title={isDemoAdmin ? "Read Only" : "Edit"}
+                    >
                       <Edit size={16} />
                     </button>
                   </Link>
 
-                  {/* Delete Button with onClick */}
+                  {/* Delete Button */}
                   <button 
                     onClick={() => handleDelete(product._id)}
-                    className="p-2 rounded-lg bg-red-500/10 text-red-400 hover:bg-red-500 hover:text-white transition cursor-pointer" title="Delete"
+                    disabled={isDemoAdmin}
+                    className={`p-2 rounded-lg transition ${
+                      isDemoAdmin 
+                        ? "bg-gray-800 text-gray-600 cursor-not-allowed" 
+                        : "bg-red-500/10 text-red-400 hover:bg-red-500 hover:text-white cursor-pointer"
+                    }`} 
+                    title={isDemoAdmin ? "Read Only" : "Delete"}
                   >
                     <Trash2 size={16} />
                   </button>

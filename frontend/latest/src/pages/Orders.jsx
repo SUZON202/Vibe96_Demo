@@ -1,11 +1,19 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import { Search, Filter, Eye, Clock, ChefHat, CheckCircle2, ShoppingBag, XCircle, Loader2 } from "lucide-react";
+// AuthContext এবং toast ইমপোর্ট করা হলো
+import { AuthContext } from "../providers/AuthProvider";
+import toast from "react-hot-toast";
 
 export default function Orders() {
   const [orders, setOrders] = useState([]);
   const [loading, setLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState("");
   const [filterStatus, setFilterStatus] = useState("All");
+
+  // AuthContext থেকে ইউজার ডেটা নেওয়া হচ্ছে
+  const { user } = useContext(AuthContext);
+  // ডেমো অ্যাডমিন কি না তা চেক করা হচ্ছে
+  const isDemoAdmin = user?.email === "admin@swad.com";
 
   // Fetching orders from the database
   useEffect(() => {
@@ -39,6 +47,12 @@ export default function Orders() {
 
   // Function to update order status
   const handleStatusUpdate = (id, newStatus) => {
+    // ডেমো অ্যাডমিন হলে স্ট্যাটাস আপডেট ব্লক করা হবে
+    if (isDemoAdmin) {
+      toast.error("Read-Only Mode: Demo Admin cannot change order status!");
+      return;
+    }
+
     fetch(`http://localhost:5000/api/orders/${id}`, {
       method: "PATCH",
       headers: {
@@ -54,11 +68,12 @@ export default function Orders() {
               order._id === id ? { ...order, status: newStatus } : order
             )
           );
+          toast.success("Order status updated successfully!");
         }
       })
       .catch((err) => {
         console.error("Error updating order status:", err);
-        alert("Failed to update status.");
+        toast.error("Failed to update status.");
       });
   };
 
@@ -176,11 +191,21 @@ export default function Orders() {
                         
                         <td className="whitespace-nowrap px-6 py-5">
                           <div className="flex items-center gap-3">
-                            {/* Status update dropdown */}
+                            {/* Status update dropdown with Demo Admin restriction */}
                             <select
                               value={order.status || "Pending"}
-                              onChange={(e) => handleStatusUpdate(order._id, e.target.value)}
-                              className={`flex items-center gap-2 rounded-full border px-3 py-1.5 text-xs font-bold outline-none cursor-pointer appearance-none transition-all ${style.bg} ${style.border} ${style.color}`}
+                              onChange={(e) => {
+                                if (isDemoAdmin) {
+                                  toast.error("Read-Only: Cannot change order status.");
+                                } else {
+                                  handleStatusUpdate(order._id, e.target.value);
+                                }
+                              }}
+                              disabled={isDemoAdmin} // ডেমো অ্যাডমিনের জন্য সিলেক্ট অপশনটি ডিজেবল থাকবে
+                              className={`flex items-center gap-2 rounded-full border px-3 py-1.5 text-xs font-bold outline-none appearance-none transition-all ${
+                                isDemoAdmin ? "cursor-not-allowed opacity-70" : "cursor-pointer"
+                              } ${style.bg} ${style.border} ${style.color}`}
+                              title={isDemoAdmin ? "Demo Admin cannot edit status" : "Update Status"}
                             >
                               <option value="Pending" className="bg-[#101a2f] text-amber-500">Pending</option>
                               <option value="Processing" className="bg-[#101a2f] text-blue-500">Processing</option>

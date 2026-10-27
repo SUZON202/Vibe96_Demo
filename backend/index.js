@@ -78,7 +78,8 @@ async function run() {
         // const result = await productsCollection.insertOne(product);
         // res.send(result);
         
-        res.send({ acknowledged: true, insertedId: null, message: "Action disabled in Live Demo." });
+        // ডেমো পারপাসে ফেক সাকসেস (insertedId: new ObjectId() দেওয়া হলো)
+        res.send({ acknowledged: true, insertedId: new ObjectId(), message: "Action simulated in Live Demo." });
       } catch (error) {
         console.error("Error adding product:", error);
         res.status(500).send({ message: "Failed to add product", error: error.message });
@@ -105,7 +106,8 @@ async function run() {
         // const result = await productsCollection.deleteOne(query);
         // res.send(result);
 
-        res.send({ deletedCount: 0, message: "Action disabled in Live Demo." });
+        // ডেমো পারপাসে ফেক সাকসেস (deletedCount: 1 দেওয়া হলো)
+        res.send({ deletedCount: 1, message: "Action simulated in Live Demo." });
       } catch (error) {
         console.error("Error deleting product:", error);
         res.status(500).send({ message: "Failed to delete product", error: error.message });
@@ -144,7 +146,8 @@ async function run() {
         // const result = await productsCollection.updateOne(filter, updateDoc);
         // res.send(result);
 
-        res.send({ modifiedCount: 0, message: "Action disabled in Live Demo." });
+        // ডেমো পারপাসে ফেক সাকসেস (modifiedCount: 1 দেওয়া হলো)
+        res.send({ modifiedCount: 1, message: "Action simulated in Live Demo." });
       } catch (error) {
         console.error("Error updating product:", error);
         res.status(500).send({ message: "Failed to update product", error: error.message });
@@ -181,6 +184,8 @@ async function run() {
     // 10. API to update order status (PATCH)
     app.patch('/api/orders/:id', async (req, res) => {
       try {
+        // ডেমোর জন্য স্ট্যাটাস আপডেট করা বন্ধ রাখা হলো (কমেন্ট করে দিলাম)
+        /*
         const id = req.params.id;
         const { status } = req.body;
         const filter = { _id: new ObjectId(id) };
@@ -189,6 +194,10 @@ async function run() {
         };
         const result = await ordersCollection.updateOne(filter, updateDoc);
         res.send(result);
+        */
+
+        // ডেমো পারপাসে ফেক সাকসেস রেসপন্স
+        res.send({ modifiedCount: 1, acknowledged: true, message: "Action simulated in Live Demo." });
       } catch (error) {
         console.error("Error updating order status:", error);
         res.status(500).send({ message: "Failed to update order status", error: error.message });
@@ -222,7 +231,8 @@ async function run() {
         // );
         // res.send({ success: true, message: "Settings updated successfully!", result });
 
-        res.send({ success: false, message: "Settings change is disabled in Live Demo." });
+        // ডেমো পারপাসে ফেক সাকসেস (success: true দেওয়া হলো)
+        res.send({ success: true, message: "Settings simulated as updated in Live Demo." });
       } catch (error) {
         console.error("Error saving settings:", error);
         res.status(500).send({ message: "Failed to save settings", error: error.message });
@@ -271,9 +281,9 @@ run().catch(console.dir);
 
 // Basic route
 app.get('/', (req, res) => {
-    res.send('Swad Grill Backend & Database are Running Perfectly!');
+  res.send('Swad Grill Backend & Database are Running Perfectly!');
 });
 
 app.listen(port, () => {
-    console.log(`Swad Grill server is running on port: ${port}`);
+  console.log(`Swad Grill server is running on port: ${port}`);
 });

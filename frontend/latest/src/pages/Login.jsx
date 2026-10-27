@@ -1,6 +1,6 @@
 import React, { useState, useContext } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { Mail, Lock, Eye, EyeOff, ArrowRight, UtensilsCrossed } from 'lucide-react';
+import { Mail, Lock, Eye, EyeOff, ArrowRight, UtensilsCrossed, ShieldCheck } from 'lucide-react';
 import { AuthContext } from '../providers/AuthProvider';
 import toast from 'react-hot-toast';
 
@@ -13,18 +13,17 @@ const Login = () => {
     const { signIn } = useContext(AuthContext);
     const navigate = useNavigate();
 
+    // মেইন লগইন ফাংশন
     const handleLogin = (e) => {
         e.preventDefault();
         setError('');
         
-        // Fast loading message
         const toastId = toast.loading('Logging in...');
 
-        // Log in via Firebase
         signIn(email, password)
             .then((result) => {
-                toast.dismiss(toastId); // Remove loading message
-                toast.success('Successfully Logged In!', { duration: 2000 }); // Fast success pop-up
+                toast.dismiss(toastId);
+                toast.success('Successfully Logged In!', { duration: 2000 });
                 navigate('/');
             })
             .catch((err) => {
@@ -32,6 +31,33 @@ const Login = () => {
                 console.error(err);
                 toast.error('Login Failed!');
                 setError('Invalid email or password. Please try again.');
+            });
+    };
+
+    // ডেমো অ্যাডমিন লগইন ফাংশন (One-Click Login)
+    const handleDemoLogin = () => {
+        const demoEmail = "admin@swad.com";
+        const demoPassword = "admin123";
+        
+        // ফর্মের ইনপুট বক্সে ভ্যালু দেখানোর জন্য
+        setEmail(demoEmail);
+        setPassword(demoPassword);
+        setError('');
+
+        const toastId = toast.loading('Logging in as Demo Admin...');
+
+        // সরাসরি ফায়ারবেস লগইন কল করা হচ্ছে
+        signIn(demoEmail, demoPassword)
+            .then((result) => {
+                toast.dismiss(toastId);
+                toast.success('Demo Login Successful!', { duration: 2000 });
+                navigate('/');
+            })
+            .catch((err) => {
+                toast.dismiss(toastId);
+                console.error(err);
+                toast.error('Demo Login Failed!');
+                setError('Please ensure admin@swad.com is created in Firebase.');
             });
     };
 
@@ -63,7 +89,7 @@ const Login = () => {
                                     required
                                     value={email}
                                     onChange={(e) => setEmail(e.target.value)}
-                                    placeholder="admin@swadgrill.com"
+                                    placeholder="admin@swad.com"
                                     className={inputClass}
                                 />
                             </div>
@@ -113,6 +139,23 @@ const Login = () => {
                             <ArrowRight size={18} className="transition group-hover:translate-x-1" />
                         </button>
                     </form>
+
+                    {/* Divider */}
+                    <div className="relative flex items-center py-5">
+                        <div className="flex-grow border-t border-white/10"></div>
+                        <span className="flex-shrink-0 mx-4 text-gray-500 text-xs uppercase tracking-wider">Or</span>
+                        <div className="flex-grow border-t border-white/10"></div>
+                    </div>
+
+                    {/* Demo Login Button */}
+                    <button
+                        type="button"
+                        onClick={handleDemoLogin}
+                        className="flex w-full items-center justify-center gap-2 rounded-xl border border-orange-500/50 bg-orange-500/10 py-3.5 text-sm font-bold text-orange-400 transition hover:bg-orange-500 hover:text-white"
+                    >
+                        <ShieldCheck size={18} />
+                        Login as Demo Admin
+                    </button>
 
                     {/* Register Link */}
                     <div className="mt-8 text-center text-sm text-gray-400">
