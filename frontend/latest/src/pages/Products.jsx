@@ -5,14 +5,14 @@ import { AuthContext } from "../providers/AuthProvider";
 import toast from "react-hot-toast";
 
 export default function Products() {
-  // Demo Products for Vibe96 Marketplace Preview
+  // Demo Products for Vibe96 Marketplace Preview with Working Image Links
   const [products, setProducts] = useState([
     {
       _id: "6addc9fea67e0fa253bc3b8",
       name: "Special Grilled Chicken",
       price: 350,
       category: "Main Course",
-      image: "https://i.ibb.co/Vvz1W6P/chicken-grill.jpg",
+      image: "https://images.unsplash.com/photo-1555939594-58d7cb561ad1?w=600&auto=format&fit=crop&q=80",
       description: "Delicious and spicy special grilled chicken served with salad and sauce."
     },
     {
@@ -20,7 +20,7 @@ export default function Products() {
       name: "Juicy Beef Burger",
       price: 500,
       category: "Fast Food",
-      image: "https://i.ibb.co/x8w48z/bbbbb.avif",
+      image: "https://images.unsplash.com/photo-1568901346375-23c9450c58cd?w=600&auto=format&fit=crop&q=80",
       description: "Cheesy and juicy beef burger with special spicy sauce."
     }
   ]);
