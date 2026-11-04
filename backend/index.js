@@ -192,7 +192,7 @@ app.get('/api/orders', verifyToken, async (req, res) => {
 app.post('/api/orders', verifyToken, async (req, res) => {
   try {
     const newOrder = req.body;
-    if (newOrder.email && newOrder.email !== req.decoded.email) {
+    if (!newOrder.email || newOrder.email !== req.decoded.email) {
       return res.status(403).send({ message: 'Forbidden access' });
     }
     const result = await ordersCollection.insertOne(newOrder);
@@ -241,7 +241,10 @@ app.post('/api/settings', verifyToken, verifyAdmin, async (req, res) => {
 
 app.post('/api/create-payment-intent', verifyToken, async (req, res) => {
   try {
-    const { price } = req.body;
+    const { price, email } = req.body;
+    if (!email || email !== req.decoded.email) {
+      return res.status(403).send({ message: 'Forbidden access' });
+    }
     if (!process.env.STRIPE_SECRET_KEY) {
       return res.status(400).send({ error: "No Stripe Key" });
     }

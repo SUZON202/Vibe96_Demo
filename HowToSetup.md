@@ -4,18 +4,17 @@
 - Node.js installed.
 - MongoDB Atlas cluster ready (Get your MONGODB_URI).
 - Firebase account configured for authentication keys.
+- Stripe account configured for payment keys.
 
 ## 2. Backend Setup
-1. Navigate to the backend directory: `cd backend`
+1. Navigate to the `backend` directory: `cd backend`
 2. Install dependencies: `npm install`
-3. Create a `.env` file using `.env.example` as a template and add your `MONGODB_URI`.
-4. Create a new database named `swadGrillDB` in your MongoDB cluster.
-5. Seed database with initial demo data: `npm run seed` (this runs database/seed.js).
-6. Ensure MongoDB collections (users, products, orders, settings) are configured.
-7. Start the server: `npm start`
+3. Create a `.env` file using `.env.example` as a template and configure your `MONGODB_URI` and other keys.
+4. **Database Setup and Seeding:** Run `node database/seed.js` (or `npm run seed`) to create collections and populate the database with initial demo data.
+5. Start the backend server: `npm start`
 
 ## 3. Frontend Setup
-1. Navigate to the frontend directory: `cd frontend`
+1. Navigate to the `frontend` directory: `cd frontend`
 2. Install dependencies: `npm install`
-3. Create a `.env` file for your Firebase configuration keys.
+3. Create a `.env` file using `.env.example` as a template and add your Firebase keys and `VITE_API_URL`.
 4. Start the React application: `npm run dev`
