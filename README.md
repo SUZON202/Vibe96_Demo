@@ -9,7 +9,6 @@ A full-stack restaurant web application.
 
 ## Demo Credentials
 - Admin Email: demo@example.com
-- Password: SwadDemo8899
 
 ## License
 See [LICENSE-NOTE.md](./LICENSE-NOTE.md) for details.
