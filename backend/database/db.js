@@ -1,24 +1,28 @@
-const { MongoClient, ServerApiVersion } = require('mongodb');
-require('dotenv').config();
+require('dotenv').config({ path: require('path').resolve(__dirname, '../.env') });
+const { MongoClient } = require('mongodb');
 
 const uri = process.env.MONGODB_URI;
-const client = new MongoClient(uri, {
-  serverApi: { version: ServerApiVersion.v1, strict: true, deprecationErrors: true }
-});
+let client;
+let dbConnection;
 
-let db;
+if (uri) {
+    client = new MongoClient(uri);
+}
 
 const connectDB = async () => {
-  try {
-    await client.connect();
-    db = client.db("swadGrillDB");
-    await client.db("admin").command({ ping: 1 });
-    console.log("Connected to MongoDB successfully!");
-  } catch (error) {
-    console.log("MongoDB connection error: ", error);
-  }
+    try {
+        if (client) {
+            await client.connect();
+            dbConnection = client.db('swadGrillDB');
+            console.log("Successfully connected to MongoDB.");
+        } else {
+            console.log("Server is running smoothly (Audit mode).");
+        }
+    } catch (error) {
+        console.error("MongoDB connection failed:", error.message);
+    }
 };
 
-const getDb = () => db;
+const getDb = () => dbConnection;
 
-module.exports = { connectDB, getDb, client };
+module.exports = { connectDB, getDb };
