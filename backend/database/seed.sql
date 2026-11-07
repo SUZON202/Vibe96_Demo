@@ -1,1 +1,1 @@
--- This project strictly uses MongoDB. No SQL seed needed. Please run 'npm run seed' or use seed.js.
+-- We are using MongoDB for this project. Seed data is handled via JS.

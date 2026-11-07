@@ -1,1 +1,1 @@
--- This project strictly uses MongoDB. No SQL schema needed. Please run 'npm run db:setup' for indexes.
+-- We are using MongoDB for this project. No SQL schema required.
