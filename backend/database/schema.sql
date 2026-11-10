@@ -1,1 +1,10 @@
--- We are using MongoDB for this project. No SQL schema required.
+-- Swad Grill uses MongoDB, not SQL. This file is a reference of the data model only.
+-- Nothing here is executed. Collections and indexes are created by:
+--   npm run db:setup   (backend/database/setup.js)
+--
+-- Collections:
+--   products : name, category, price, description, image, available
+--   users    : email (unique), name, role ("admin" | "user"), createdAt
+--   orders   : email, items[], total, status, createdAt
+--   payments : email, amount, stripeId, createdAt
+--   settings : key, plus setting fields

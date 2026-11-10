@@ -34,16 +34,13 @@ const Login = () => {
             });
     };
 
-    // ডেমো ইমেইল প্রি-ফিল ফাংশন (Vibe96 এর জন্য হার্ডকোডেড পাসওয়ার্ড রিমুভ করা হয়েছে)
+    // ডেমো ইমেইল ও পাসওয়ার্ড অটো-ফিল ফাংশন (বায়ারদের এক ক্লিке টেস্ট করার সুবিধার জন্য)
     const handleDemoPrefill = () => {
-        const demoEmail = "demo@example.com"; 
-        
-        // ফর্মের ইনপুট বক্সে শুধু ইমেইল ভ্যালু দেখানো হচ্ছে, পাসওয়ার্ড টাইপ করতে হবে
-        setEmail(demoEmail);
-        setPassword('');
+        setEmail("demo@example.com"); 
+        setPassword("Demo@Swad2026"); // ডেমো অ্যাকাউন্টের ডিফল্ট পাসওয়ার্ড
         setError('');
         
-        toast('Demo email filled! Please enter the password from README.', { icon: 'ℹ️' });
+        toast.success('Demo credentials filled successfully!', { icon: '🚀' });
     };
 
     const inputClass = "w-full rounded-xl border border-white/10 bg-white/[0.04] px-4 py-3.5 pl-11 text-sm text-white placeholder:text-gray-500 outline-none transition focus:border-orange-500 focus:ring-2 focus:ring-orange-500/20";
@@ -139,7 +136,7 @@ const Login = () => {
                         className="flex w-full items-center justify-center gap-2 rounded-xl border border-orange-500/50 bg-orange-500/10 py-3.5 text-sm font-bold text-orange-400 transition hover:bg-orange-500 hover:text-white"
                     >
                         <ShieldCheck size={18} />
-                        Fill Demo Email
+                        Fill Demo Login
                     </button>
 
                     {/* Register Link */}

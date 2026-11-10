@@ -33,11 +33,38 @@ const AuthProvider = ({ children }) => {
         return signOut(auth);
     };
 
-    // Track User State
+    // Track User State and Manage JWT Token
     useEffect(() => {
         const unsubscribe = onAuthStateChanged(auth, currentUser => {
-            setUser(currentUser);
-            setLoading(false);
+            if (currentUser) {
+                const userInfo = { email: currentUser.email };
+                
+                fetch('http://localhost:5000/jwt', {
+                    method: 'POST',
+                    headers: {
+                        'content-type': 'application/json'
+                    },
+                    body: JSON.stringify(userInfo)
+                })
+                .then(res => res.json())
+                .then(data => {
+                    if (data.token) {
+                        localStorage.setItem('access-token', data.token);
+                        // Vibe96 Fix: টোকেন সেভ হওয়ার পর ইউজার সেট হবে, যাতে Race Condition না হয়!
+                        setUser(currentUser);
+                        setLoading(false);
+                    }
+                })
+                .catch(error => {
+                    console.error('JWT fetch error:', error);
+                    setUser(currentUser);
+                    setLoading(false);
+                });
+            } else {
+                localStorage.removeItem('access-token');
+                setUser(null);
+                setLoading(false);
+            }
         });
         return () => {
             unsubscribe();

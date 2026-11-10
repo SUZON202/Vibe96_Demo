@@ -1,1 +1,4 @@
--- We are using MongoDB for this project. Seed data is handled via JS.
+-- Swad Grill uses MongoDB, not SQL. This file is intentionally not executable SQL.
+-- Demo data (products, settings, demo admin user) is inserted by:
+--   npm run seed   (backend/database/seed.js)
+-- Run `npm run db:setup` first, then `npm run seed`.
