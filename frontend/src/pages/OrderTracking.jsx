@@ -19,7 +19,7 @@ export default function OrderTracking() {
     setSearchedOrder(null);
 
     // Fetch all orders and match from there
-    fetch("http://localhost:5000/api/orders")
+    fetch("import.meta.env.VITE_API_URL + "/api/orders")
       .then((res) => res.json())
       .then((data) => {
         if (Array.isArray(data)) {

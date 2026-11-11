@@ -41,7 +41,7 @@ export default function Dashboard() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    fetch("http://localhost:5000/api/orders")
+    fetch("import.meta.env.VITE_API_URL + "/api/orders")
       .then((res) => res.json())
       .then((data) => {
         setOrders(Array.isArray(data) ? data : []);

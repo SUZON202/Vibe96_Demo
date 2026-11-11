@@ -9,7 +9,7 @@ const UpdateProduct = () => {
 
   // Fetching the product of this ID from the backend
   useEffect(() => {
-    fetch(`http://localhost:5000/api/products/${id}`)
+    fetch(`import.meta.env.VITE_API_URL + "/api/products/${id}`)
       .then((res) => res.json())
       .then((data) => {
         setProduct(data);
@@ -35,7 +35,7 @@ const UpdateProduct = () => {
     };
 
     // Sending a PUT request to the backend to update in the database
-    fetch(`http://localhost:5000/api/products/${id}`, {
+    fetch(`import.meta.env.VITE_API_URL + "/api/products/${id}`, {
       method: "PUT",
       headers: {
         "Content-Type": "application/json",

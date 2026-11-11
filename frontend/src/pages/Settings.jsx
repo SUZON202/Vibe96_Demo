@@ -12,7 +12,7 @@ export default function Settings() {
 
   // Fetch previously saved settings and Stripe keys from the database when the page loads
   useEffect(() => {
-    fetch("http://localhost:5000/api/settings")
+    fetch("import.meta.env.VITE_API_URL + "/api/settings")
       .then((res) => res.json())
       .then((data) => {
         if (data) {
@@ -41,7 +41,7 @@ export default function Settings() {
     };
 
     // API call to save settings to the backend
-    fetch("http://localhost:5000/api/settings", {
+    fetch("import.meta.env.VITE_API_URL + "/api/settings", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(settingsData),

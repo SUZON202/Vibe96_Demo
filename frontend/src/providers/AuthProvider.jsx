@@ -1,5 +1,11 @@
 import React, { createContext, useState, useEffect } from 'react';
-import { createUserWithEmailAndPassword, getAuth, onAuthStateChanged, signInWithEmailAndPassword, signOut, updateProfile } from "firebase/auth";
+import {
+    createUserWithEmailAndPassword,
+    onIdTokenChanged,
+    signInWithEmailAndPassword,
+    signOut,
+    updateProfile
+} from "firebase/auth";
 import { auth } from '../firebase/firebase.config';
 
 export const AuthContext = createContext(null);
@@ -11,13 +17,19 @@ const AuthProvider = ({ children }) => {
     // Create User
     const createUser = (email, password) => {
         setLoading(true);
-        return createUserWithEmailAndPassword(auth, email, password);
+        return createUserWithEmailAndPassword(auth, email, password).catch((error) => {
+            setLoading(false);
+            throw error;
+        });
     };
 
     // Sign In User
     const signIn = (email, password) => {
         setLoading(true);
-        return signInWithEmailAndPassword(auth, email, password);
+        return signInWithEmailAndPassword(auth, email, password).catch((error) => {
+            setLoading(false);
+            throw error;
+        });
     };
 
     // Update Profile (Name)
@@ -33,42 +45,24 @@ const AuthProvider = ({ children }) => {
         return signOut(auth);
     };
 
-    // Track User State and Manage JWT Token
+    // Firebase ID token is stored for API calls and refreshed automatically (about hourly)
     useEffect(() => {
-        const unsubscribe = onAuthStateChanged(auth, currentUser => {
+        const unsubscribe = onIdTokenChanged(auth, async (currentUser) => {
             if (currentUser) {
-                const userInfo = { email: currentUser.email };
-                
-                fetch('http://localhost:5000/jwt', {
-                    method: 'POST',
-                    headers: {
-                        'content-type': 'application/json'
-                    },
-                    body: JSON.stringify(userInfo)
-                })
-                .then(res => res.json())
-                .then(data => {
-                    if (data.token) {
-                        localStorage.setItem('access-token', data.token);
-                        // Vibe96 Fix: টোকেন সেভ হওয়ার পর ইউজার সেট হবে, যাতে Race Condition না হয়!
-                        setUser(currentUser);
-                        setLoading(false);
-                    }
-                })
-                .catch(error => {
-                    console.error('JWT fetch error:', error);
-                    setUser(currentUser);
-                    setLoading(false);
-                });
+                try {
+                    const token = await currentUser.getIdToken();
+                    localStorage.setItem('access-token', token);
+                } catch (error) {
+                    console.error('Token error:', error);
+                }
+                setUser(currentUser);
             } else {
                 localStorage.removeItem('access-token');
                 setUser(null);
-                setLoading(false);
             }
+            setLoading(false);
         });
-        return () => {
-            unsubscribe();
-        }
+        return () => unsubscribe();
     }, []);
 
     const authInfo = {

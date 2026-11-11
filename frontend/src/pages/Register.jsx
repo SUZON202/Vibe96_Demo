@@ -40,7 +40,7 @@ const Register = () => {
                             role: 'user' // New user will get 'user' role by default
                         };
 
-                        fetch('http://localhost:5000/users', {
+                        fetch('import.meta.env.VITE_API_URL + "/users', {
                             method: 'POST',
                             headers: {
                                 'content-type': 'application/json'

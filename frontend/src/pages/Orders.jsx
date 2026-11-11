@@ -17,7 +17,7 @@ export default function Orders() {
 
   // Fetching orders from the database
   useEffect(() => {
-    fetch("http://localhost:5000/api/orders")
+    fetch("import.meta.env.VITE_API_URL + "/api/orders")
       .then((res) => res.json())
       .then((data) => {
         setOrders(data);
@@ -53,7 +53,7 @@ export default function Orders() {
       return;
     }
 
-    fetch(`http://localhost:5000/api/orders/${id}`, {
+    fetch(`import.meta.env.VITE_API_URL + "/api/orders/${id}`, {
       method: "PATCH",
       headers: {
         "Content-Type": "application/json",

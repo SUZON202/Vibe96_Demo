@@ -3,58 +3,58 @@ const { ObjectId } = require('mongodb');
 const router = express.Router();
 const verifyToken = require('../middleware/verifyToken');
 const verifyAdmin = require('../middleware/verifyAdmin');
+const { isAdminEmail } = require('../middleware/roles');
 const { getDb } = require('../database/db');
 
-// ইউজার শুধু নিজের অর্ডার দেখবে, অ্যাডমিন সবারটা দেখবে
+// ⚠️ Orders.jsx এ যে status মানগুলো ব্যবহার হয় সেগুলো এখানে মিলিয়ে নাও
+const ALLOWED_STATUS = ['pending', 'preparing', 'ready', 'delivered', 'completed', 'cancelled'];
+
 router.get('/', verifyToken, async (req, res) => {
-  const email = req.decoded.email;
-  const usersCollection = getDb().collection("users");
-  const requester = await usersCollection.findOne({ email: email });
-
-  const query = {};
-  if (requester?.role !== 'main_admin' && requester?.role !== 'sub_admin') {
-    query.customerEmail = email; // সাধারণ ইউজারের জন্য ফিল্টার
+  try {
+    const email = req.decoded.email;
+    const query = (await isAdminEmail(email)) ? {} : { customerEmail: email };
+    const result = await getDb().collection('orders').find(query).toArray();
+    res.send(result);
+  } catch (error) {
+    res.status(500).send({ message: 'Failed to load orders' });
   }
-
-  const ordersCollection = getDb().collection("orders");
-  const result = await ordersCollection.find(query).toArray();
-  res.send(result);
 });
 
-// নির্দিষ্ট একটি অর্ডার দেখা (অন্যের অর্ডার দেখা বন্ধ)
 router.get('/:id', verifyToken, async (req, res) => {
-  const id = req.params.id;
-  const email = req.decoded.email;
-  
-  const usersCollection = getDb().collection("users");
-  const requester = await usersCollection.findOne({ email: email });
-  const isAdmin = requester?.role === 'main_admin' || requester?.role === 'sub_admin';
+  try {
+    if (!ObjectId.isValid(req.params.id)) {
+      return res.status(400).send({ message: 'Invalid order id' });
+    }
+    const email = req.decoded.email;
+    const order = await getDb().collection('orders').findOne({ _id: new ObjectId(req.params.id) });
+    if (!order) return res.status(404).send({ message: 'Order not found' });
 
-  const ordersCollection = getDb().collection("orders");
-  const order = await ordersCollection.findOne({ _id: new ObjectId(id) });
-
-  if (!order) return res.status(404).send({ message: 'Order not found' });
-
-  // ইউজার যদি অর্ডারের মালিক না হয় এবং অ্যাডমিন না হয়, তবে এক্সেস ডিনাই!
-  if (order.customerEmail !== email && !isAdmin) {
-    return res.status(403).send({ message: 'Forbidden access' });
+    if (order.customerEmail !== email && !(await isAdminEmail(email))) {
+      return res.status(403).send({ message: 'Forbidden access' });
+    }
+    res.send(order);
+  } catch (error) {
+    res.status(500).send({ message: 'Failed to load order' });
   }
-
-  res.send(order);
 });
 
-// অর্ডার আপডেট করা (শুধু অ্যাডমিন পারবে)
 router.patch('/:id', verifyToken, verifyAdmin, async (req, res) => {
-  const id = req.params.id;
-  const filter = { _id: new ObjectId(id) };
-  const updatedDoc = {
-    $set: {
-      status: req.body.status
+  try {
+    if (!ObjectId.isValid(req.params.id)) {
+      return res.status(400).send({ message: 'Invalid order id' });
     }
-  };
-  const ordersCollection = getDb().collection("orders");
-  const result = await ordersCollection.updateOne(filter, updatedDoc);
-  res.send(result);
+    const status = req.body.status;
+    if (typeof status !== 'string' || !ALLOWED_STATUS.includes(status)) {
+      return res.status(400).send({ message: 'Invalid status value' });
+    }
+    const result = await getDb().collection('orders').updateOne(
+      { _id: new ObjectId(req.params.id) },
+      { $set: { status } }
+    );
+    res.send(result);
+  } catch (error) {
+    res.status(500).send({ message: 'Failed to update order' });
+  }
 });
 
 module.exports = router;
