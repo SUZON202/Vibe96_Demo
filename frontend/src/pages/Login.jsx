@@ -25,7 +25,6 @@ const Login = () => {
                 toast.dismiss(toastId);
                 toast.success('Successfully Logged In!', { duration: 2000 });
                 
-                // Auth state আপডেট হওয়ার জন্য সামান্য সময় দেওয়া হলো
                 setTimeout(() => {
                     navigate('/dashboard');
                 }, 800);
@@ -43,15 +42,21 @@ const Login = () => {
         setError('');
         const toastId = toast.loading('Logging into Demo Admin...');
 
-        const demoEmail = "admin@swad.com"; 
-        const demoPassword = "Demo@Swad2026"; 
+        // হার্ডকোড পাসওয়ার্ড সরিয়ে Environment Variable ব্যবহার করা হয়েছে
+        const demoEmail = import.meta.env.VITE_DEMO_EMAIL; 
+        const demoPassword = import.meta.env.VITE_DEMO_PASSWORD; 
+
+        if (!demoEmail || !demoPassword) {
+            toast.dismiss(toastId);
+            toast.error('Demo credentials not configured securely!');
+            return;
+        }
 
         signIn(demoEmail, demoPassword)
             .then(() => {
                 toast.dismiss(toastId);
                 toast.success('Admin Demo Login Successful!', { icon: '🚀', duration: 2000 });
                 
-                // Auth state আপডেট হওয়ার জন্য সামান্য সময় দেওয়া হলো
                 setTimeout(() => {
                     navigate('/dashboard');
                 }, 800);
