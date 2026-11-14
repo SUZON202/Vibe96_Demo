@@ -20,46 +20,51 @@ import UpdateProduct from "../pages/UpdateProduct";
 import OrderTracking from "../pages/OrderTracking"; // <-- Order tracking page imported
 import ProtectedRoute from "../components/ProtectedRoute"; 
 import AdminRoute from "../components/AdminRoute";
+import LandingPage from "../pages/LandingPage"; // <-- New Landing Page imported
 
 const router = createBrowserRouter([
     {
         path: "/",
+        element: <LandingPage />,
+    },
+    {
+        path: "/demo", // Changed from "/" to "/demo" for Live Demo
         element: <Root />,
         children: [
             {
-                path: "/",
+                path: "",
                 element: <Home />,
             },
             {
-                path: "/menu",
+                path: "menu",
                 element: <Menu />,
             },
             {
-                path: "/reservation",
+                path: "reservation",
                 element: <Reservation />,
             },
             {
-                path: "/about",
+                path: "about",
                 element: <About />,
             },
             {
-                path: "/contact",
+                path: "contact",
                 element: <Contact />,
             },
             {
-                path: "/cart-checkout",
+                path: "cart-checkout",
                 element: <CartAndCheckout />,
             },
             {
-                path: "/login",
+                path: "login",
                 element: <Login />,
             },
             {
-                path: "/register",
+                path: "register",
                 element: <Register />,
             },
             {
-                path: "/track-order", // <-- New route for customers to track orders
+                path: "track-order", // <-- New route for customers to track orders
                 element: <OrderTracking />,
             }
         ],

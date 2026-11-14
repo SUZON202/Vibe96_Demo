@@ -13,7 +13,7 @@ const Login = () => {
     const { signIn } = useContext(AuthContext);
     const navigate = useNavigate();
 
-    // মেইন লগইন ফাংশন
+    // মেইন লগইন ফাংশন (সাধারণ ইউজারদের জন্য)
     const handleLogin = (e) => {
         e.preventDefault();
         setError('');
@@ -24,7 +24,11 @@ const Login = () => {
             .then((result) => {
                 toast.dismiss(toastId);
                 toast.success('Successfully Logged In!', { duration: 2000 });
-                navigate('/');
+                
+                // Auth state আপডেট হওয়ার জন্য সামান্য সময় দেওয়া হলো
+                setTimeout(() => {
+                    navigate('/dashboard');
+                }, 800);
             })
             .catch((err) => {
                 toast.dismiss(toastId);
@@ -34,13 +38,30 @@ const Login = () => {
             });
     };
 
-    // ডেমো ইমেইল ও পাসওয়ার্ড অটো-ফিল ফাংশন (বায়ারদের এক ক্লিке টেস্ট করার সুবিধার জন্য)
-    const handleDemoPrefill = () => {
-        setEmail("demo@example.com"); 
-        setPassword("Demo@Swad2026"); // ডেমো অ্যাকাউন্টের ডিফল্ট পাসওয়ার্ড
+    // Vibe96 Requirement: One-Click Admin Demo Login
+    const handleOneClickDemoLogin = () => {
         setError('');
-        
-        toast.success('Demo credentials filled successfully!', { icon: '🚀' });
+        const toastId = toast.loading('Logging into Demo Admin...');
+
+        const demoEmail = "admin@swad.com"; 
+        const demoPassword = "Demo@Swad2026"; 
+
+        signIn(demoEmail, demoPassword)
+            .then(() => {
+                toast.dismiss(toastId);
+                toast.success('Admin Demo Login Successful!', { icon: '🚀', duration: 2000 });
+                
+                // Auth state আপডেট হওয়ার জন্য সামান্য সময় দেওয়া হলো
+                setTimeout(() => {
+                    navigate('/dashboard');
+                }, 800);
+            })
+            .catch((err) => {
+                toast.dismiss(toastId);
+                console.error(err);
+                toast.error('Demo Login Failed!');
+                setError('Unable to login to demo account. Please check Firebase credentials.');
+            });
     };
 
     const inputClass = "w-full rounded-xl border border-white/10 bg-white/[0.04] px-4 py-3.5 pl-11 text-sm text-white placeholder:text-gray-500 outline-none transition focus:border-orange-500 focus:ring-2 focus:ring-orange-500/20";
@@ -71,7 +92,7 @@ const Login = () => {
                                     required
                                     value={email}
                                     onChange={(e) => setEmail(e.target.value)}
-                                    placeholder="admin@swad.com"
+                                    placeholder="admin@swadgrill.com"
                                     className={inputClass}
                                 />
                             </div>
@@ -115,7 +136,7 @@ const Login = () => {
                         {/* Submit Button */}
                         <button
                             type="submit"
-                            className="group flex w-full items-center justify-center gap-2 rounded-xl bg-orange-500 py-4 text-sm font-bold text-white transition hover:bg-orange-600 mt-6"
+                            className="group flex w-full items-center justify-center gap-2 rounded-xl bg-orange-500 py-4 text-sm font-bold text-white transition hover:bg-orange-600 mt-6 shadow-lg shadow-orange-500/20"
                         >
                             Sign In
                             <ArrowRight size={18} className="transition group-hover:translate-x-1" />
@@ -129,14 +150,14 @@ const Login = () => {
                         <div className="flex-grow border-t border-white/10"></div>
                     </div>
 
-                    {/* Demo Login Button */}
+                    {/* Vibe96 Required: One-Click Demo Login Button */}
                     <button
                         type="button"
-                        onClick={handleDemoPrefill}
-                        className="flex w-full items-center justify-center gap-2 rounded-xl border border-orange-500/50 bg-orange-500/10 py-3.5 text-sm font-bold text-orange-400 transition hover:bg-orange-500 hover:text-white"
+                        onClick={handleOneClickDemoLogin}
+                        className="flex w-full items-center justify-center gap-2 rounded-xl border-2 border-orange-500 bg-orange-500/10 py-3.5 text-sm font-bold text-orange-400 transition hover:bg-orange-500 hover:text-white"
                     >
                         <ShieldCheck size={18} />
-                        Fill Demo Login
+                        One-Click Admin Demo
                     </button>
 
                     {/* Register Link */}

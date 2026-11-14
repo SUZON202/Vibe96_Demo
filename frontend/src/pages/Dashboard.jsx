@@ -41,7 +41,8 @@ export default function Dashboard() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    fetch("import.meta.env.VITE_API_URL + "/api/orders")
+    // 💡 Fix applied here: Used template literal for proper string concatenation
+    fetch(`${import.meta.env.VITE_API_URL}/api/orders`)
       .then((res) => res.json())
       .then((data) => {
         setOrders(Array.isArray(data) ? data : []);
@@ -164,6 +165,7 @@ export default function Dashboard() {
                 const circumference = 2 * Math.PI * 72; 
                 return sales.map((s) => { 
                   const length = (circumference * s.value) / 100; 
+                  // 💡 Fix applied here: Corrected the template literal backticks in strokeDasharray
                   const el = <circle key={s.name} cx="100" cy="100" r="72" fill="none" stroke={s.color} strokeWidth="22" strokeDasharray={`${Math.max(0, length - 4)} ${circumference - length + 4}`} strokeDashoffset={-offset} strokeLinecap="round" />; 
                   offset += length; 
                   return el; 

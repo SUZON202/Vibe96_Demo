@@ -18,8 +18,8 @@ export default function OrderTracking() {
     setError("");
     setSearchedOrder(null);
 
-    // Fetch all orders and match from there
-    fetch("import.meta.env.VITE_API_URL + "/api/orders")
+    // 💡 Fix applied here: Used template literal for proper string concatenation
+    fetch(`${import.meta.env.VITE_API_URL}/api/orders`)
       .then((res) => res.json())
       .then((data) => {
         if (Array.isArray(data)) {

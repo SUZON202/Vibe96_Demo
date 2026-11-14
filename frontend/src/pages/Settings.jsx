@@ -12,7 +12,8 @@ export default function Settings() {
 
   // Fetch previously saved settings and Stripe keys from the database when the page loads
   useEffect(() => {
-    fetch("import.meta.env.VITE_API_URL + "/api/settings")
+    // 💡 Fix applied here: Used template literal for proper string concatenation
+    fetch(`${import.meta.env.VITE_API_URL}/api/settings`)
       .then((res) => res.json())
       .then((data) => {
         if (data) {
@@ -41,7 +42,8 @@ export default function Settings() {
     };
 
     // API call to save settings to the backend
-    fetch("import.meta.env.VITE_API_URL + "/api/settings", {
+    // 💡 Fix applied here as well
+    fetch(`${import.meta.env.VITE_API_URL}/api/settings`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(settingsData),
@@ -154,7 +156,7 @@ export default function Settings() {
               <input 
                 type="password" 
                 value={stripeSecretKey} 
-                onChange={(e) => setstripeSecretKey(e.target.value)}
+                onChange={(e) => setStripeSecretKey(e.target.value)} // Fixed variable name typo here as well
                 placeholder="sk_test_..." 
                 className="w-full rounded-xl border border-white/[0.08] bg-[#0a0f1e] px-4 py-3 text-white focus:border-orange-500 focus:outline-none"
               />

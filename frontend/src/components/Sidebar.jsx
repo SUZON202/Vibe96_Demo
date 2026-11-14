@@ -7,7 +7,8 @@ export default function Sidebar({ open, close }) {
 
   // Fetch real-time order count from backend
   useEffect(() => {
-    fetch("import.meta.env.VITE_API_URL + "/api/orders")
+    // 💡 Fix applied here: Used template literal for proper string concatenation
+    fetch(`${import.meta.env.VITE_API_URL}/api/orders`)
       .then((res) => res.json())
       .then((data) => {
         if (Array.isArray(data)) {

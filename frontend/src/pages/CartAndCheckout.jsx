@@ -207,7 +207,8 @@ export default function CartAndCheckout() {
       date: new Date().toISOString().split("T")[0],
     };
 
-    fetch("import.meta.env.VITE_API_URL + "/api/orders", {
+    // 💡 Fix applied here: Used template literal for proper string concatenation
+    fetch(`${import.meta.env.VITE_API_URL}/api/orders`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

@@ -10,14 +10,15 @@ export default function Orders() {
   const [searchTerm, setSearchTerm] = useState("");
   const [filterStatus, setFilterStatus] = useState("All");
 
-  // AuthContext থেকে ইউজার ডেটা নেওয়া হচ্ছে
+  // AuthContext থেকে ইউজার ডেটা নেওয়া হচ্ছে
   const { user } = useContext(AuthContext);
   // ডেমো অ্যাডমিন কি না তা চেক করা হচ্ছে
   const isDemoAdmin = user?.email === "admin@swad.com";
 
   // Fetching orders from the database
   useEffect(() => {
-    fetch("import.meta.env.VITE_API_URL + "/api/orders")
+    // 💡 Fix applied here: Used template literal for proper string concatenation
+    fetch(`${import.meta.env.VITE_API_URL}/api/orders`)
       .then((res) => res.json())
       .then((data) => {
         setOrders(data);
@@ -53,7 +54,8 @@ export default function Orders() {
       return;
     }
 
-    fetch(`import.meta.env.VITE_API_URL + "/api/orders/${id}`, {
+    // 💡 Fix applied here: Corrected the backticks for template literal
+    fetch(`${import.meta.env.VITE_API_URL}/api/orders/${id}`, {
       method: "PATCH",
       headers: {
         "Content-Type": "application/json",

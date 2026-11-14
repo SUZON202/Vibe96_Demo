@@ -65,8 +65,8 @@ export default function AddProduct() {
         image: imageUrl,
       };
 
-      // 3. Sending data to our backend API
-      const response = await fetch("import.meta.env.VITE_API_URL + "/api/products", {
+      // 3. Sending data to our backend API (Fix applied here)
+      const response = await fetch(`${import.meta.env.VITE_API_URL}/api/products`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
