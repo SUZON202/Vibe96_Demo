@@ -21,12 +21,12 @@ export default function Sidebar({ open, close }) {
   }, []);
 
   const navItems = [
-    { name: "Dashboard", path: "/dashboard", icon: LayoutDashboard },
-    { name: "Orders", path: "/dashboard/orders", icon: ShoppingBag, count: orderCount },
-    { name: "Products", path: "/dashboard/products", icon: Package },
-    { name: "Customers", path: "/dashboard/customers", icon: Users },
-    { name: "Analytics", path: "/dashboard/analytics", icon: BarChart3 },
-    { name: "Settings", path: "/dashboard/settings", icon: Settings },
+    { name: "Dashboard", path: "/demo/dashboard", icon: LayoutDashboard },
+    { name: "Orders", path: "/demo/dashboard/orders", icon: ShoppingBag, count: orderCount },
+    { name: "Products", path: "/demo/dashboard/products", icon: Package },
+    { name: "Customers", path: "/demo/dashboard/customers", icon: Users },
+    { name: "Analytics", path: "/demo/dashboard/analytics", icon: BarChart3 },
+    { name: "Settings", path: "/demo/dashboard/settings", icon: Settings },
   ];
 
   return (
@@ -53,7 +53,7 @@ export default function Sidebar({ open, close }) {
               const Icon = item.icon;
               return (
                 <NavLink 
-                  end={item.path === "/dashboard"}
+                  end={item.path === "/demo/dashboard"}
                   key={item.name} 
                   to={item.path}
                   onClick={close} 
@@ -80,7 +80,7 @@ export default function Sidebar({ open, close }) {
             <div className="mb-3 flex h-9 w-9 items-center justify-center rounded-xl bg-orange-500/20 text-orange-400"><Sparkles size={18} /></div>
             <p className="text-sm font-semibold text-white">Need more insights?</p>
             <p className="mt-1 text-xs leading-5 text-gray-500">Explore your business performance and grow smarter.</p>
-            <NavLink to="/dashboard/analytics" onClick={close} className="mt-4 flex w-full items-center justify-center gap-2 rounded-lg bg-orange-500 py-2.5 text-xs font-bold text-white transition hover:bg-orange-600">Explore Analytics <ArrowUpRight size={14} /></NavLink>
+            <NavLink to="/demo/dashboard/analytics" onClick={close} className="mt-4 flex w-full items-center justify-center gap-2 rounded-lg bg-orange-500 py-2.5 text-xs font-bold text-white transition hover:bg-orange-600">Explore Analytics <ArrowUpRight size={14} /></NavLink>
           </div>
           <button className="mt-4 flex w-full items-center gap-3 rounded-xl border border-white/[0.07] p-3 text-left transition hover:bg-white/[0.03]">
             <div className="flex h-10 w-10 items-center justify-center rounded-full bg-gradient-to-br from-orange-400 to-amber-600 font-bold text-white">A</div>

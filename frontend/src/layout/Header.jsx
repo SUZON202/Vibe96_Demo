@@ -44,7 +44,7 @@ const Header = () => {
         logOut()
             .then(() => {
                 toast.success('Successfully Logged Out!'); // Logout success pop-up
-                navigate('/'); // Redirect to home page after logout
+                navigate('/demo'); // Redirect to demo home page after logout
             })
             .catch(error => {
                 console.error(error);
@@ -54,12 +54,12 @@ const Header = () => {
 
     const navLinks = (
         <>
-            <li><Link to="/" className="text-gray-800 hover:text-black hover:bg-yellow-300 transition-all font-medium">Home</Link></li>
-            <li><Link to="/menu" className="text-gray-800 hover:text-black hover:bg-yellow-300 transition-all font-medium">Menu</Link></li>
-            <li><Link to="/reservation" className="text-gray-800 hover:text-black hover:bg-yellow-300 transition-all font-medium">Reservation</Link></li>
-            <li><Link to="/track-order" className="text-gray-800 hover:text-black hover:bg-yellow-300 transition-all font-medium">Track Order</Link></li>
-            <li><Link to="/about" className="text-gray-800 hover:text-black hover:bg-yellow-300 transition-all font-medium">About</Link></li>
-            <li><Link to="/contact" className="text-gray-800 hover:text-black hover:bg-yellow-300 transition-all font-medium">Contact</Link></li>
+            <li><Link to="/demo" className="text-gray-800 hover:text-black hover:bg-yellow-300 transition-all font-medium">Home</Link></li>
+            <li><Link to="/demo/menu" className="text-gray-800 hover:text-black hover:bg-yellow-300 transition-all font-medium">Menu</Link></li>
+            <li><Link to="/demo/reservation" className="text-gray-800 hover:text-black hover:bg-yellow-300 transition-all font-medium">Reservation</Link></li>
+            <li><Link to="/demo/track-order" className="text-gray-800 hover:text-black hover:bg-yellow-300 transition-all font-medium">Track Order</Link></li>
+            <li><Link to="/demo/about" className="text-gray-800 hover:text-black hover:bg-yellow-300 transition-all font-medium">About</Link></li>
+            <li><Link to="/demo/contact" className="text-gray-800 hover:text-black hover:bg-yellow-300 transition-all font-medium">Contact</Link></li>
         </>
     );
 
@@ -78,7 +78,7 @@ const Header = () => {
                     </ul>
                 </div>
                 {/* Website Logo / Name */}
-                <Link to="/" className="btn btn-ghost text-2xl font-bold text-gray-900 tracking-wide hover:bg-transparent">
+                <Link to="/demo" className="btn btn-ghost text-2xl font-bold text-gray-900 tracking-wide hover:bg-transparent">
                     Swad Grill
                 </Link>
             </div>
@@ -92,7 +92,7 @@ const Header = () => {
             
             <div className="navbar-end gap-2">
                 {/* Cart Icon */}
-                <Link to="/cart-checkout" className="btn btn-ghost btn-circle text-gray-900 hover:bg-yellow-300">
+                <Link to="/demo/cart-checkout" className="btn btn-ghost btn-circle text-gray-900 hover:bg-yellow-300">
                     <div className="indicator">
                         <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z" />
@@ -107,7 +107,7 @@ const Header = () => {
                 {/* Conditional Dashboard / Login & Logout Button */}
                 {user ? (
                     <>
-                        <Link to="/dashboard" className="btn bg-gray-900 text-yellow-400 hover:bg-black border-none shadow-sm">
+                        <Link to="/demo/dashboard" className="btn bg-gray-900 text-yellow-400 hover:bg-black border-none shadow-sm">
                             Dashboard
                         </Link>
                         <button onClick={handleLogOut} className="btn bg-red-600 text-white hover:bg-red-700 border-none shadow-sm">
@@ -115,7 +115,7 @@ const Header = () => {
                         </button>
                     </>
                 ) : (
-                    <Link to="/login" className="btn bg-gray-900 text-yellow-400 hover:bg-black border-none shadow-sm">
+                    <Link to="/demo/login" className="btn bg-gray-900 text-yellow-400 hover:bg-black border-none shadow-sm">
                         Login
                     </Link>
                 )}

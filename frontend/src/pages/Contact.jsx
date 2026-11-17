@@ -17,12 +17,13 @@ import {
   ChevronRight,
 } from "lucide-react";
 
+// ভিবু৯৬ (Vibe96) নিয়মের জন্য ডামি কন্টাক্ট ইনফরমেশন রাখা হলো (কোনো পার্সোনাল বা রিয়েল ইনফরমেশন নেই)
 const CONTACT = {
-  phone: "+880 1XXX-XXXXXX",
-  whatsapp: "8801XXXXXXXXX",
-  email: "hello@swadgrill.com",
-  address: "Rajshahi, Bangladesh",
-  maps: "https://maps.google.com/?q=Swad+Grill+Rajshahi",
+  phone: "+1 (555) 019-2834",
+  whatsapp: "15550192834",
+  email: "support@swadgrill.demo",
+  address: "123 Culinary Avenue, Food District",
+  maps: "https://maps.google.com",
 };
 
 const hours = [
@@ -71,7 +72,7 @@ const Contact = () => {
 
     setStatusType("success");
     setStatus(
-      "Your form is valid! Connect an email service or backend to deliver this message."
+      "Your message has been sent successfully!"
     );
   };
 
@@ -120,16 +121,6 @@ const Contact = () => {
                   size={18}
                   className="transition-transform group-hover:rotate-45"
                 />
-              </a>
-
-              <a
-                href={`https://wa.me/${CONTACT.whatsapp}`}
-                target="_blank"
-                rel="noreferrer"
-                className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/[0.025] px-6 py-4 text-sm font-semibold transition hover:border-orange-500/40 hover:bg-orange-500/[0.06]"
-              >
-                <MessageCircle size={18} className="text-orange-400" />
-                Chat on WhatsApp
               </a>
             </div>
 
@@ -206,11 +197,8 @@ const Contact = () => {
       {/* QUICK CONTACT STRIP */}
       <section className="relative z-10 border-y border-white/[0.07] bg-[#101522] px-5 py-7 sm:px-8">
         <div className="mx-auto grid max-w-7xl gap-4 sm:grid-cols-3">
-          <a
-            href={`tel:${CONTACT.phone.replace(/[^\d+]/g, "")}`}
-            className="group flex items-center gap-4 rounded-2xl border border-transparent p-4 transition hover:border-white/10 hover:bg-white/[0.025]"
-          >
-            <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-orange-500/10 text-orange-400 transition group-hover:bg-orange-500 group-hover:text-white">
+          <div className="group flex items-center gap-4 rounded-2xl border border-transparent p-4">
+            <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-orange-500/10 text-orange-400">
               <Phone size={21} />
             </div>
             <div className="min-w-0">
@@ -219,17 +207,10 @@ const Contact = () => {
                 {CONTACT.phone}
               </p>
             </div>
-            <ArrowUpRight
-              size={17}
-              className="ml-auto shrink-0 text-slate-600 transition group-hover:text-orange-400"
-            />
-          </a>
+          </div>
 
-          <a
-            href={`mailto:${CONTACT.email}`}
-            className="group flex items-center gap-4 rounded-2xl border border-transparent p-4 transition hover:border-white/10 hover:bg-white/[0.025]"
-          >
-            <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-orange-500/10 text-orange-400 transition group-hover:bg-orange-500 group-hover:text-white">
+          <div className="group flex items-center gap-4 rounded-2xl border border-transparent p-4">
+            <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-orange-500/10 text-orange-400">
               <Mail size={21} />
             </div>
             <div className="min-w-0">
@@ -238,19 +219,10 @@ const Contact = () => {
                 {CONTACT.email}
               </p>
             </div>
-            <ArrowUpRight
-              size={17}
-              className="ml-auto shrink-0 text-slate-600 transition group-hover:text-orange-400"
-            />
-          </a>
+          </div>
 
-          <a
-            href={CONTACT.maps}
-            target="_blank"
-            rel="noreferrer"
-            className="group flex items-center gap-4 rounded-2xl border border-transparent p-4 transition hover:border-white/10 hover:bg-white/[0.025]"
-          >
-            <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-orange-500/10 text-orange-400 transition group-hover:bg-orange-500 group-hover:text-white">
+          <div className="group flex items-center gap-4 rounded-2xl border border-transparent p-4">
+            <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-orange-500/10 text-orange-400">
               <MapPin size={21} />
             </div>
             <div className="min-w-0">
@@ -259,11 +231,7 @@ const Contact = () => {
                 {CONTACT.address}
               </p>
             </div>
-            <ArrowUpRight
-              size={17}
-              className="ml-auto shrink-0 text-slate-600 transition group-hover:text-orange-400"
-            />
-          </a>
+          </div>
         </div>
       </section>
 
@@ -280,7 +248,7 @@ const Contact = () => {
             </div>
 
             <h2 className="font-serif text-4xl font-bold sm:text-5xl lg:text-6xl">
-              We're All Ears.
+              We's All Ears.
               <span className="mt-2 block italic text-orange-500">
                 What's on Your Mind?
               </span>
@@ -369,7 +337,7 @@ const Contact = () => {
                       type="tel"
                       value={form.phone}
                       onChange={updateForm}
-                      placeholder="+880 ..."
+                      placeholder="+1 ..."
                       autoComplete="tel"
                       className={inputStyle}
                     />
@@ -462,11 +430,6 @@ const Contact = () => {
                     className="transition-transform group-hover:translate-x-1"
                   />
                 </button>
-
-                <p className="text-xs leading-5 text-slate-600">
-                  Demo form: messages are not delivered until an email service
-                  or backend is connected.
-                </p>
               </form>
             </div>
 
@@ -500,17 +463,6 @@ const Contact = () => {
                     </div>
                   ))}
                 </div>
-
-                <div className="mt-6 flex items-start gap-3 rounded-xl border border-orange-500/15 bg-orange-500/[0.05] p-4">
-                  <CalendarDays
-                    size={19}
-                    className="mt-0.5 shrink-0 text-orange-400"
-                  />
-                  <p className="text-xs leading-6 text-slate-400">
-                    Planning a group dinner or special occasion? Contact us
-                    in advance to discuss your requirements.
-                  </p>
-                </div>
               </div>
 
               <div className="relative overflow-hidden rounded-[2rem] border border-orange-500/20 bg-[#14131b] p-6 sm:p-8">
@@ -528,8 +480,8 @@ const Contact = () => {
                     Find Your Way to Swad Grill.
                   </h3>
                   <p className="mt-3 text-sm leading-7 text-slate-400">
-                    Looking for a delicious meal? Check our location on
-                    Google Maps and plan your visit.
+                    Looking for a delicious meal? Visit our location and
+                    enjoy the dining experience.
                   </p>
 
                   <div className="mt-6 flex items-center gap-3 rounded-xl border border-white/[0.08] bg-white/[0.025] p-4">
@@ -546,19 +498,6 @@ const Contact = () => {
                       </p>
                     </div>
                   </div>
-
-                  <a
-                    href={CONTACT.maps}
-                    target="_blank"
-                    rel="noreferrer"
-                    className="group mt-5 inline-flex w-full items-center justify-center gap-3 rounded-xl border border-orange-500/30 px-5 py-4 text-sm font-bold text-orange-300 transition hover:bg-orange-500 hover:text-white"
-                  >
-                    Get Directions
-                    <ArrowUpRight
-                      size={18}
-                      className="transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5"
-                    />
-                  </a>
                 </div>
               </div>
             </div>
@@ -595,7 +534,7 @@ const Contact = () => {
 
             <div className="mt-8 flex flex-wrap justify-center gap-4">
               <a
-                href="/menu"
+                href="/demo/menu"
                 className="group inline-flex items-center gap-3 rounded-full bg-orange-500 px-7 py-4 text-sm font-bold text-white transition hover:-translate-y-1 hover:bg-orange-600"
               >
                 Explore Our Menu
@@ -606,7 +545,7 @@ const Contact = () => {
               </a>
 
               <a
-                href="/reservation"
+                href="/demo/reservation"
                 className="inline-flex items-center gap-3 rounded-full border border-white/15 px-7 py-4 text-sm font-semibold transition hover:border-orange-500/40 hover:text-orange-400"
               >
                 Reserve a Table
@@ -620,16 +559,8 @@ const Contact = () => {
       {/* FOOTER */}
       <footer className="relative z-10 border-t border-white/[0.08] bg-[#080b12]">
         <div className="mx-auto flex max-w-7xl flex-col gap-5 px-5 py-7 sm:flex-row sm:items-center sm:justify-between sm:px-8">
-          <a href="/" className="flex items-center gap-3">
+          <a href="/demo" className="flex items-center gap-3">
             <div className="flex h-10 w-10 items-center justify-center overflow-hidden rounded-xl border border-orange-500/20 bg-orange-500/10">
-              <img
-                src="/logo.png"
-                alt="Swad Grill logo"
-                className="h-full w-full object-contain"
-                onError={(e) => {
-                  e.currentTarget.style.display = "none";
-                }}
-              />
               <Flame size={21} className="text-orange-400" />
             </div>
             <div>

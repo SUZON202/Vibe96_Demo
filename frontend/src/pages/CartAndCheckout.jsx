@@ -728,7 +728,7 @@ export default function CartAndCheckout() {
             </button>
 
             <Link
-              to="/dashboard/orders"
+              to="/demo/dashboard/orders"
               className="flex items-center justify-center gap-2 rounded-xl border border-white/10 px-7 py-4 text-xs font-bold text-slate-300 transition hover:border-orange-500/40 hover:text-orange-400"
             >
               VIEW DASHBOARD

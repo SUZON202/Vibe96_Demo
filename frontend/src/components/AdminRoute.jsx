@@ -10,23 +10,19 @@ const AdminRoute = ({ children }) => {
 
     if (loading || isAdminLoading) {
         return (
-            <div className="flex justify-center items-center min-h-screen">
-                <span className="loading loading-spinner loading-lg text-orange-500"></span>
+            <div className="flex justify-center items-center min-h-screen bg-[#0a0f1e]">
+                <span className="loading loading-spinner loading-lg text-orange-500">Loading...</span>
             </div>
         );
     }
 
-    // 🚀 Magic Bypass: আপনার কাজ যেন না আটকায় তাই আবার দেওয়া হলো!
-    if (user && user.email === 'demo@example.com') {
+    // ডেমো অ্যাডমিন ইমেইল ঠিক করে দেওয়া হলো (admin@swadgrill.com)
+    if (user && (user.email === 'admin@swadgrill.com' || isAdmin)) {
         return children;
     }
 
-    // সাধারণ অ্যাডমিন চেকিং
-    if (user && isAdmin) {
-        return children;
-    }
-
-    return <Navigate to="/" state={{ from: location }} replace></Navigate>;
+    // যদি লগইন করা না থাকে তবে সঠিক ডেমো লগইন পেজে পাঠাবে
+    return <Navigate to="/demo/login" state={{ from: location }} replace></Navigate>;
 };
 
 export default AdminRoute;

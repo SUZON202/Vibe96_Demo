@@ -1,4 +1,6 @@
-import React from "react";
+import React from 'react';
+import { Link } from 'react-router-dom';
+import { FiMonitor, FiSmartphone, FiCreditCard, FiSettings, FiLayout, FiCode } from 'react-icons/fi';
 import {
   ArrowDownRight,
   ArrowRight,
@@ -362,10 +364,10 @@ const About = () => {
               </div>
               <div>
                 <h3 className="font-serif text-xl font-bold">
-                  Shafiq Suzon
+                  Management Team
                 </h3>
                 <p className="mt-1 text-[10px] font-bold uppercase tracking-[0.2em] text-orange-400">
-                  Founder, Swad Grill
+                  Swad Grill Leadership
                 </p>
               </div>
               <div className="ml-auto hidden h-12 w-12 items-center justify-center rounded-full border border-white/10 text-orange-400 sm:flex">
@@ -556,7 +558,7 @@ const About = () => {
 
             <div className="mt-9 flex flex-wrap justify-center gap-4">
               <a
-                href="/menu"
+                href="/demo/menu"
                 className="group inline-flex items-center gap-3 rounded-full bg-orange-500 px-8 py-4 font-bold text-white shadow-xl shadow-orange-500/15 transition duration-300 hover:-translate-y-1 hover:bg-orange-600"
               >
                 Explore Our Menu
@@ -567,7 +569,7 @@ const About = () => {
               </a>
 
               <a
-                href="/reservation"
+                href="/demo/reservation"
                 className="inline-flex items-center gap-3 rounded-full border border-white/15 px-8 py-4 font-semibold text-white transition hover:border-orange-500/50 hover:text-orange-400"
               >
                 Book a Table

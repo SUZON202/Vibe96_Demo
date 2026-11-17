@@ -6,7 +6,8 @@ import {
     signOut,
     updateProfile
 } from "firebase/auth";
-import { auth } from '../firebase/firebase.config';
+// কার্লি ব্র্যাকেট সরিয়ে দেওয়া হয়েছে
+import auth from '../firebase/firebase.config';
 
 export const AuthContext = createContext(null);
 

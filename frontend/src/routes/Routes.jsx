@@ -17,18 +17,18 @@ import Customers from "../pages/Customers";
 import Analytics from "../pages/Analytics";
 import Settings from "../pages/Settings";
 import UpdateProduct from "../pages/UpdateProduct";
-import OrderTracking from "../pages/OrderTracking"; // <-- Order tracking page imported
+import OrderTracking from "../pages/OrderTracking"; 
 import ProtectedRoute from "../components/ProtectedRoute"; 
 import AdminRoute from "../components/AdminRoute";
-import LandingPage from "../pages/LandingPage"; // <-- New Landing Page imported
+import PromoLanding from "../pages/PromoLanding"; 
 
 const router = createBrowserRouter([
     {
         path: "/",
-        element: <LandingPage />,
+        element: <PromoLanding />,
     },
     {
-        path: "/demo", // Changed from "/" to "/demo" for Live Demo
+        path: "/demo", 
         element: <Root />,
         children: [
             {
@@ -64,14 +64,14 @@ const router = createBrowserRouter([
                 element: <Register />,
             },
             {
-                path: "track-order", // <-- New route for customers to track orders
+                path: "track-order",
                 element: <OrderTracking />,
             }
         ],
     },
     {
-        path: "/dashboard",
-        // Vibe96 Fix: ড্যাশবোর্ডকে ProtectedRoute এবং AdminRoute দিয়ে র‍্যাপ করা হলো
+        // ড্যাশবোর্ডকে একদম সেপারেট এবং সিকিউর পাথ দেওয়া হলো
+        path: "/demo/dashboard",
         element: (
             <ProtectedRoute>
                 <AdminRoute>

@@ -104,7 +104,7 @@ export default function Dashboard() {
           </label>
           <button onClick={downloadReport} className="flex items-center gap-2 rounded-xl border border-white/10 bg-[#101a2f] px-4 py-3 text-sm font-medium text-white transition hover:border-orange-500/40 hover:text-orange-400"><Download size={16} /> Export</button>
           
-          <button onClick={() => navigate("/dashboard/add-product")} className="flex items-center gap-2 rounded-xl bg-orange-500 px-4 py-3 text-sm font-bold text-white transition hover:bg-orange-600"><Plus size={17} /> Add Product</button>
+          <button onClick={() => navigate("/demo/dashboard/add-product")} className="flex items-center gap-2 rounded-xl bg-orange-500 px-4 py-3 text-sm font-bold text-white transition hover:bg-orange-600"><Plus size={17} /> Add Product</button>
         </div>
       </section>
 
@@ -185,7 +185,7 @@ export default function Dashboard() {
         <article className="min-w-0 rounded-2xl border border-white/[0.08] bg-[#101a2f]">
           <div className="flex flex-wrap items-center justify-between gap-4 border-b border-white/[0.07] p-5 sm:p-6">
             <div><h2 className="text-lg font-bold text-white">Recent Orders</h2><p className="mt-1 text-sm text-gray-500">Track your latest customer orders</p></div>
-            <button onClick={() => navigate("/dashboard/orders")} className="flex items-center gap-1 text-sm font-semibold text-orange-400 transition hover:text-orange-300">View all <ArrowUpRight size={16} /></button>
+            <button onClick={() => navigate("/demo/dashboard/orders")} className="flex items-center gap-1 text-sm font-semibold text-orange-400 transition hover:text-orange-300">View all <ArrowUpRight size={16} /></button>
           </div>
           <div className="flex flex-wrap items-center gap-2 p-4 sm:px-6">
             <div className="flex flex-1 items-center gap-2 rounded-lg border border-white/[0.08] px-3 py-2 md:hidden"><Search size={15} className="text-gray-500" /><input value={search} onChange={(e) => setSearch(e.target.value)} placeholder="Search orders..." className="w-full bg-transparent text-sm text-white outline-none placeholder:text-gray-500" /></div>
@@ -228,7 +228,7 @@ export default function Dashboard() {
                             <span className="h-1.5 w-1.5 rounded-full bg-current" />{orderStatus}
                           </span>
                         </td>
-                        <td className="px-4 py-4"><button onClick={() => navigate("/dashboard/orders")} className="rounded-lg border border-white/[0.08] p-2 text-gray-400 transition hover:border-orange-500/40 hover:text-orange-400 hover:bg-orange-500/10"><Eye size={15} /></button></td>
+                        <td className="px-4 py-4"><button onClick={() => navigate("/demo/dashboard/orders")} className="rounded-lg border border-white/[0.08] p-2 text-gray-400 transition hover:border-orange-500/40 hover:text-orange-400 hover:bg-orange-500/10"><Eye size={15} /></button></td>
                       </tr>
                     );
                   })
@@ -239,7 +239,7 @@ export default function Dashboard() {
         </article>
 
         <article className="rounded-2xl border border-white/[0.08] bg-[#101a2f] p-5 sm:p-6">
-          <div className="flex items-start justify-between"><div><h2 className="text-lg font-bold text-white">Top Products</h2><p className="mt-1 text-sm text-gray-500">Best-selling items</p></div><button onClick={() => navigate("/dashboard/products")} className="rounded-lg p-2 text-gray-500 transition hover:bg-white/5 hover:text-white"><ArrowUpRight size={18} /></button></div>
+          <div className="flex items-start justify-between"><div><h2 className="text-lg font-bold text-white">Top Products</h2><p className="mt-1 text-sm text-gray-500">Best-selling items</p></div><button onClick={() => navigate("/demo/dashboard/products")} className="rounded-lg p-2 text-gray-500 transition hover:bg-white/5 hover:text-white"><ArrowUpRight size={18} /></button></div>
           <div className="mt-7 space-y-6">
             {topProducts.map((p, i) => <div key={p.name}>
               <div className="flex items-center gap-3">
@@ -250,7 +250,7 @@ export default function Dashboard() {
               <div className="mt-3 h-1.5 overflow-hidden rounded-full bg-white/[0.06]"><div className={`h-full rounded-full ${p.color} transition-all duration-700`} style={{ width: `${p.percent}%` }} /></div>
             </div>)}
           </div>
-          <button onClick={() => navigate("/dashboard/products")} className="mt-8 flex w-full items-center justify-center gap-2 rounded-xl border border-white/10 py-3 text-sm font-semibold text-gray-300 transition hover:border-orange-500/40 hover:text-orange-400 hover:bg-orange-500/5">View All Products <ArrowUpRight size={16} /></button>
+          <button onClick={() => navigate("/demo/dashboard/products")} className="mt-8 flex w-full items-center justify-center gap-2 rounded-xl border border-white/10 py-3 text-sm font-semibold text-gray-300 transition hover:border-orange-500/40 hover:text-orange-400 hover:bg-orange-500/5">View All Products <ArrowUpRight size={16} /></button>
         </article>
       </section>
 

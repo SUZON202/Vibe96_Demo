@@ -56,7 +56,7 @@ export default function Products() {
           <p className="mt-1 text-sm text-gray-500">Manage all your restaurant products and dishes here.</p>
         </div>
         <Link 
-          to={isDemoAdmin ? "#" : "/dashboard/add-product"}
+          to={isDemoAdmin ? "#" : "/demo/dashboard/add-product"}
           onClick={(e) => {
             if (isDemoAdmin) {
               e.preventDefault();
@@ -112,7 +112,7 @@ export default function Products() {
                   
                   {/* Edit Button */}
                   <Link 
-                    to={isDemoAdmin ? "#" : `/dashboard/update-product/${product._id}`}
+                    to={isDemoAdmin ? "#" : `/demo/dashboard/update-product/${product._id}`}
                     onClick={(e) => {
                       if (isDemoAdmin) {
                         e.preventDefault();

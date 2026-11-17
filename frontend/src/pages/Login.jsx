@@ -21,13 +21,14 @@ const Login = () => {
         const toastId = toast.loading('Logging in...');
 
         signIn(email, password)
-            .then((result) => {
+            .then(() => {
                 toast.dismiss(toastId);
                 toast.success('Successfully Logged In!', { duration: 2000 });
                 
+                // ফায়ারবেস স্টেট আপডেট হওয়ার জন্য সামান্য সময় দিয়ে ড্যাশবোর্ডে পাঠানো
                 setTimeout(() => {
-                    navigate('/dashboard');
-                }, 800);
+                    window.location.href = '/demo/dashboard';
+                }, 500);
             })
             .catch((err) => {
                 toast.dismiss(toastId);
@@ -40,26 +41,24 @@ const Login = () => {
     // Vibe96 Requirement: One-Click Admin Demo Login
     const handleOneClickDemoLogin = () => {
         setError('');
+        
+        const demoEmail = "admin@swadgrill.com"; 
+        const demoPassword = "swad2019"; 
+
+        setEmail(demoEmail);
+        setPassword(demoPassword);
+
         const toastId = toast.loading('Logging into Demo Admin...');
-
-        // হার্ডকোড পাসওয়ার্ড সরিয়ে Environment Variable ব্যবহার করা হয়েছে
-        const demoEmail = import.meta.env.VITE_DEMO_EMAIL; 
-        const demoPassword = import.meta.env.VITE_DEMO_PASSWORD; 
-
-        if (!demoEmail || !demoPassword) {
-            toast.dismiss(toastId);
-            toast.error('Demo credentials not configured securely!');
-            return;
-        }
 
         signIn(demoEmail, demoPassword)
             .then(() => {
                 toast.dismiss(toastId);
                 toast.success('Admin Demo Login Successful!', { icon: '🚀', duration: 2000 });
                 
+                // ডেমো অ্যাডমিন লগইনের পর ব্রাউজার রিফ্রেশসহ ড্যাশবোর্ডে রিডাইরেক্ট (যাতে কোনো রাউটিং লুপ বা ক্যাশ সমস্যা না থাকে)
                 setTimeout(() => {
-                    navigate('/dashboard');
-                }, 800);
+                    window.location.href = '/demo/dashboard';
+                }, 500);
             })
             .catch((err) => {
                 toast.dismiss(toastId);
@@ -168,7 +167,7 @@ const Login = () => {
                     {/* Register Link */}
                     <div className="mt-8 text-center text-sm text-gray-400">
                         Don't have an account?{" "}
-                        <Link to="/register" className="font-semibold text-orange-400 hover:text-orange-300 transition-colors">
+                        <Link to="/demo/register" className="font-semibold text-orange-400 hover:text-orange-300 transition-colors">
                             Create Account
                         </Link>
                     </div>

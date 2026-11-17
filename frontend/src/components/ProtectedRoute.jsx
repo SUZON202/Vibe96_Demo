@@ -20,8 +20,8 @@ const ProtectedRoute = ({ children }) => {
         return children;
     }
 
-    // Redirect to login page if not logged in
-    return <Navigate to="/login" state={{ from: location }} replace></Navigate>;
+    // Redirect to correct demo login page if not logged in
+    return <Navigate to="/demo/login" state={{ from: location }} replace></Navigate>;
 };
 
 export default ProtectedRoute;

@@ -46,7 +46,7 @@ const UpdateProduct = () => {
       .then((data) => {
         if (data.modifiedCount > 0) {
           alert("Product updated successfully!");
-          navigate("/dashboard/products"); // Return to product list after updating
+          navigate("/demo/dashboard/products"); // Return to product list after updating
         } else {
           alert("You made no changes!");
         }
