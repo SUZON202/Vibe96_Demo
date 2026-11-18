@@ -2,12 +2,12 @@ import { initializeApp } from "firebase/app";
 import { getAuth } from "firebase/auth";
 
 const firebaseConfig = {
-  apiKey: "AIzaSyAZuJ3V6B4W-Qkn1PiCjY2YC8kD2IubUj8",
-  authDomain: "swad-grill.firebaseapp.com",
-  projectId: "swad-grill",
-  storageBucket: "swad-grill.firebasestorage.app",
-  messagingSenderId: "317756786628",
-  appId: "1:317756786628:web:64f29488bab02e96f64691"
+  apiKey: import.meta.env.VITE_FIREBASE_API_KEY,
+  authDomain: import.meta.env.VITE_FIREBASE_AUTH_DOMAIN,
+  projectId: import.meta.env.VITE_FIREBASE_PROJECT_ID,
+  storageBucket: import.meta.env.VITE_FIREBASE_STORAGE_BUCKET,
+  messagingSenderId: import.meta.env.VITE_FIREBASE_MESSAGING_SENDER_ID,
+  appId: import.meta.env.VITE_FIREBASE_APP_ID
 };
 
 const app = initializeApp(firebaseConfig);

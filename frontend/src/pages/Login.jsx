@@ -25,7 +25,6 @@ const Login = () => {
                 toast.dismiss(toastId);
                 toast.success('Successfully Logged In!', { duration: 2000 });
                 
-                // ফায়ারবেস স্টেট আপডেট হওয়ার জন্য সামান্য সময় দিয়ে ড্যাশবোর্ডে পাঠানো
                 setTimeout(() => {
                     window.location.href = '/demo/dashboard';
                 }, 500);
@@ -42,8 +41,14 @@ const Login = () => {
     const handleOneClickDemoLogin = () => {
         setError('');
         
-        const demoEmail = "admin@swadgrill.com"; 
-        const demoPassword = "swad2019"; 
+        // Environment Variable থেকে ডেমো ক্রেডেনশিয়ালস নেওয়া হচ্ছে
+        const demoEmail = import.meta.env.VITE_DEMO_EMAIL; 
+        const demoPassword = import.meta.env.VITE_DEMO_PASSWORD; 
+
+        if (!demoEmail || !demoPassword) {
+            toast.error('Demo credentials are not configured in environment variables.');
+            return;
+        }
 
         setEmail(demoEmail);
         setPassword(demoPassword);
@@ -55,7 +60,6 @@ const Login = () => {
                 toast.dismiss(toastId);
                 toast.success('Admin Demo Login Successful!', { icon: '🚀', duration: 2000 });
                 
-                // ডেমো অ্যাডমিন লগইনের পর ব্রাউজার রিফ্রেশসহ ড্যাশবোর্ডে রিডাইরেক্ট (যাতে কোনো রাউটিং লুপ বা ক্যাশ সমস্যা না থাকে)
                 setTimeout(() => {
                     window.location.href = '/demo/dashboard';
                 }, 500);
