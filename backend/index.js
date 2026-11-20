@@ -1,13 +1,41 @@
 const express = require('express');
 const cors = require('cors');
+const rateLimit = require('express-rate-limit');
 require('dotenv').config();
 const { connectDB } = require('./database/db');
 
 const app = express();
 const port = process.env.PORT || 5000;
 
-app.use(cors({ origin: process.env.CORS_ORIGIN }));
-app.use(express.json());
+const allowedOrigins = (
+  process.env.CORS_ORIGIN || 'http://localhost:5173,http://localhost:3000'
+)
+  .split(',')
+  .map((origin) => origin.trim())
+  .filter(Boolean);
+
+app.use(
+  cors({
+    origin(origin, callback) {
+      if (!origin || allowedOrigins.includes(origin)) {
+        return callback(null, true);
+      }
+      return callback(new Error('Not allowed by CORS'));
+    },
+    credentials: true,
+  })
+);
+
+const apiLimiter = rateLimit({
+  windowMs: 15 * 60 * 1000,
+  max: 150,
+  standardHeaders: true,
+  legacyHeaders: false,
+  message: { message: 'Too many requests, please try again later.' },
+});
+
+app.use(express.json({ limit: '1mb' }));
+app.use('/api', apiLimiter);
 
 // Routes
 app.use('/users', require('./routes/users'));

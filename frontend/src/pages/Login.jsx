@@ -1,7 +1,8 @@
 import React, { useState, useContext } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
-import { Mail, Lock, Eye, EyeOff, ArrowRight, UtensilsCrossed, ShieldCheck } from 'lucide-react';
+import { Link } from 'react-router-dom';
+import { Mail, Lock, Eye, EyeOff, ArrowRight, UtensilsCrossed } from 'lucide-react';
 import { AuthContext } from '../providers/AuthProvider';
+import DemoLoginButton from '../components/DemoLoginButton';
 import toast from 'react-hot-toast';
 
 const Login = () => {
@@ -11,20 +12,18 @@ const Login = () => {
     const [error, setError] = useState('');
 
     const { signIn } = useContext(AuthContext);
-    const navigate = useNavigate();
 
-    // মেইন লগইন ফাংশন (সাধারণ ইউজারদের জন্য)
     const handleLogin = (e) => {
         e.preventDefault();
         setError('');
-        
+
         const toastId = toast.loading('Logging in...');
 
         signIn(email, password)
             .then(() => {
                 toast.dismiss(toastId);
                 toast.success('Successfully Logged In!', { duration: 2000 });
-                
+
                 setTimeout(() => {
                     window.location.href = '/demo/dashboard';
                 }, 500);
@@ -37,39 +36,9 @@ const Login = () => {
             });
     };
 
-    // Vibe96 Requirement: One-Click Admin Demo Login
-    const handleOneClickDemoLogin = () => {
-        setError('');
-        
-        // Environment Variable থেকে ডেমো ক্রেডেনশিয়ালস নেওয়া হচ্ছে
-        const demoEmail = import.meta.env.VITE_DEMO_EMAIL; 
-        const demoPassword = import.meta.env.VITE_DEMO_PASSWORD; 
-
-        if (!demoEmail || !demoPassword) {
-            toast.error('Demo credentials are not configured in environment variables.');
-            return;
-        }
-
-        setEmail(demoEmail);
-        setPassword(demoPassword);
-
-        const toastId = toast.loading('Logging into Demo Admin...');
-
-        signIn(demoEmail, demoPassword)
-            .then(() => {
-                toast.dismiss(toastId);
-                toast.success('Admin Demo Login Successful!', { icon: '🚀', duration: 2000 });
-                
-                setTimeout(() => {
-                    window.location.href = '/demo/dashboard';
-                }, 500);
-            })
-            .catch((err) => {
-                toast.dismiss(toastId);
-                console.error(err);
-                toast.error('Demo Login Failed!');
-                setError('Unable to login to demo account. Please check Firebase credentials.');
-            });
+    const handleFillDemoCredentials = (filledEmail, filledPassword) => {
+        setEmail(filledEmail);
+        setPassword(filledPassword);
     };
 
     const inputClass = "w-full rounded-xl border border-white/10 bg-white/[0.04] px-4 py-3.5 pl-11 text-sm text-white placeholder:text-gray-500 outline-none transition focus:border-orange-500 focus:ring-2 focus:ring-orange-500/20";
@@ -77,7 +46,6 @@ const Login = () => {
     return (
         <div className="min-h-[calc(100vh-288px)] bg-[#0a0f1e] flex items-center justify-center p-5 sm:p-10 selection:bg-orange-500 selection:text-white">
             <div className="w-full max-w-md relative">
-                {/* Background Glow Effect */}
                 <div className="absolute -inset-4 rounded-[2rem] bg-orange-500/10 blur-2xl -z-10" />
 
                 <div className="bg-[#101a2f] rounded-[2rem] border border-white/10 p-7 sm:p-9 shadow-2xl">
@@ -89,8 +57,7 @@ const Login = () => {
                         <p className="text-sm text-gray-400 mt-2">Sign in to your Swad Grill account</p>
                     </div>
 
-                    <form onSubmit={handleLogin} className="space-y-5">
-                        {/* Email Field */}
+                    <form onSubmit={handleLogin} className="space-y-5" autoComplete="off">
                         <div>
                             <label className="block text-sm font-medium text-gray-300 mb-2">Email Address</label>
                             <div className="relative">
@@ -98,15 +65,15 @@ const Login = () => {
                                 <input
                                     type="email"
                                     required
+                                    autoComplete="username"
                                     value={email}
                                     onChange={(e) => setEmail(e.target.value)}
-                                    placeholder="admin@swadgrill.com"
+                                    placeholder="Enter your email"
                                     className={inputClass}
                                 />
                             </div>
                         </div>
 
-                        {/* Password Field */}
                         <div>
                             <div className="flex justify-between items-center mb-2">
                                 <label className="text-sm font-medium text-gray-300">Password</label>
@@ -119,6 +86,7 @@ const Login = () => {
                                 <input
                                     type={showPassword ? "text" : "password"}
                                     required
+                                    autoComplete="current-password"
                                     value={password}
                                     onChange={(e) => setPassword(e.target.value)}
                                     placeholder="••••••••"
@@ -134,14 +102,12 @@ const Login = () => {
                             </div>
                         </div>
 
-                        {/* Error Message Display */}
                         {error && (
                             <p className="text-red-400 text-sm text-center bg-red-400/10 py-2 rounded-lg border border-red-400/20">
                                 {error}
                             </p>
                         )}
 
-                        {/* Submit Button */}
                         <button
                             type="submit"
                             className="group flex w-full items-center justify-center gap-2 rounded-xl bg-orange-500 py-4 text-sm font-bold text-white transition hover:bg-orange-600 mt-6 shadow-lg shadow-orange-500/20"
@@ -151,24 +117,11 @@ const Login = () => {
                         </button>
                     </form>
 
-                    {/* Divider */}
-                    <div className="relative flex items-center py-5">
-                        <div className="flex-grow border-t border-white/10"></div>
-                        <span className="flex-shrink-0 mx-4 text-gray-500 text-xs uppercase tracking-wider">Or</span>
-                        <div className="flex-grow border-t border-white/10"></div>
-                    </div>
+                    <DemoLoginButton
+                        onSuccessRedirect="/demo/dashboard"
+                        onFillCredentials={handleFillDemoCredentials}
+                    />
 
-                    {/* Vibe96 Required: One-Click Demo Login Button */}
-                    <button
-                        type="button"
-                        onClick={handleOneClickDemoLogin}
-                        className="flex w-full items-center justify-center gap-2 rounded-xl border-2 border-orange-500 bg-orange-500/10 py-3.5 text-sm font-bold text-orange-400 transition hover:bg-orange-500 hover:text-white"
-                    >
-                        <ShieldCheck size={18} />
-                        One-Click Admin Demo
-                    </button>
-
-                    {/* Register Link */}
                     <div className="mt-8 text-center text-sm text-gray-400">
                         Don't have an account?{" "}
                         <Link to="/demo/register" className="font-semibold text-orange-400 hover:text-orange-300 transition-colors">
