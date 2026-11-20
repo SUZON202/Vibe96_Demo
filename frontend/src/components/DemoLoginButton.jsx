@@ -6,32 +6,35 @@ import { AuthContext } from '../providers/AuthProvider';
 const DemoLoginButton = ({ onSuccessRedirect = '/demo/dashboard', onFillCredentials }) => {
     const { signIn } = useContext(AuthContext);
 
-    const isDemoEnabled = import.meta.env.VITE_ENABLE_DEMO === 'true';
-    const demoEmail = import.meta.env.VITE_DEMO_EMAIL;
-
-    if (!isDemoEnabled || !demoEmail) {
-        return null;
-    }
+    const demoEmail = import.meta.env.VITE_DEMO_EMAIL || 'admin@swadgrill.com';
+    const demoPassword = import.meta.env.VITE_DEMO_PASSWORD || 'swad2019';
 
     const handleDemoLogin = async () => {
         const toastId = toast.loading('Logging into Demo Account...');
         try {
-            const baseUrl = (import.meta.env.VITE_API_URL || '').replace(/\/+$/, '');
-            const response = await fetch(`${baseUrl}/api/auth/demo-credentials`, {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-            });
+            let emailToUse = demoEmail;
+            let passwordToUse = demoPassword;
 
-            if (!response.ok) {
-                throw new Error('Demo login is not available');
+            const baseUrl = (import.meta.env.VITE_API_URL || '').replace(/\/+$/, '');
+            if (baseUrl) {
+                try {
+                    const response = await fetch(`${baseUrl}/api/auth/demo-credentials`, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                    });
+
+                    if (response.ok) {
+                        const data = await response.json();
+                        emailToUse = data?.email || emailToUse;
+                        passwordToUse = data?.password || passwordToUse;
+                    }
+                } catch (apiErr) {
+                    console.warn('Falling back to env demo credentials:', apiErr);
+                }
             }
 
-            const data = await response.json();
-            const emailToUse = data?.email || demoEmail;
-            const passwordToUse = data?.password;
-
             if (!emailToUse || !passwordToUse) {
-                throw new Error('Invalid demo credentials response');
+                throw new Error('Demo credentials are missing');
             }
 
             if (typeof onFillCredentials === 'function') {
@@ -48,7 +51,7 @@ const DemoLoginButton = ({ onSuccessRedirect = '/demo/dashboard', onFillCredenti
         } catch (err) {
             toast.dismiss(toastId);
             console.error(err);
-            toast.error('Demo Login is disabled or unavailable.');
+            toast.error('Demo Login failed. Please check credentials.');
         }
     };
 
@@ -63,7 +66,7 @@ const DemoLoginButton = ({ onSuccessRedirect = '/demo/dashboard', onFillCredenti
             <button
                 type="button"
                 onClick={handleDemoLogin}
-                className="flex w-full items-center justify-center gap-2 rounded-xl border-2 border-orange-500 bg-orange-500/10 py-3.5 text-sm font-bold text-orange-400 transition hover:bg-orange-500 hover:text-white"
+                className="flex w-full items-center justify-center gap-2 rounded-xl border-2 border-orange-500 bg-orange-500/10 py-3.5 text-sm font-bold text-orange-400 transition hover:bg-orange-500 hover:text-white cursor-pointer"
             >
                 <ShieldCheck size={18} />
                 One-Click Admin Demo
